@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Data Manager</title>
+    <link rel="icon" href="./img/website-icon.png" type="image/png">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="container">
+        <a href="./"></a>
+        <h1>Game Data Manager</h1>
+
+        <div class="db-control-panel">
+            <div class="db-control-header">
+                <label for="dbSelector">ACTIVE DATABASE</label>
+            </div>
+            <div class="db-actions-row">
+                <select id="dbSelector"></select>
+                <button id="createDbBtn" class="action-btn" title="Create New Database">+</button>
+                <button id="deleteDbBtn" class="action-btn delete-btn" title="Delete Current Database">🗑️</button>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <h2>Current Save Files</h2>
+            <button id="refreshBtn" title="Refresh File List">🔄</button>
+        </div>
+
+        <input type="search" id="searchFilter" placeholder="Search for files...">
+        
+        <div id="batchActionsBar">
+            <span id="selectionCount"></span>
+            <button id="downloadSelectedBtn" class="action-btn">Download Selected (.zip)</button>
+            <button id="deleteSelectedBtn" class="action-btn delete-btn">Delete Selected</button>
+        </div>
+
+        <div class="table-wrapper">
+            <table id="saveFilesTable">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="selectAllCheckbox" title="Select All"></th>
+                        <th data-sort-by="name">File Name</th>
+                        <th data-sort-by="size">File Size</th>
+                        <th data-sort-by="date">Last Modified</th>
+                        <th class="actions-cell">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="saveFilesTbody"></tbody>
+            </table>
+        </div>
+
+        <h2>Global Actions</h2>
+        <button id="downloadZipBtn" class="main-action-btn">Download All Saves as .zip</button>
+        <button id="deleteAllBtn" class="main-action-btn danger-btn">Delete All Files</button>
+        
+        <h2>Upload New Save File</h2>
+        <div id="uploadArea">
+            <p>Drag & Drop a file here or click below</p>
+            <input type="file" id="fileUploadInput" />
+        </div>
+        <button id="uploadBtn" class="main-action-btn">Upload Selected File</button>
+        <p id="statusMessage"></p>
+    </div>
+
+    <div id="deleteModal" class="modal-overlay"><div class="modal-content"><h2>Confirm Deletion</h2><p>Are you sure you want to permanently delete this file?</p><p class="modal-info-text" id="fileToDeleteName"></p><div class="modal-actions"><button class="modal-btn cancel-btn">Cancel</button><button class="modal-btn confirm-btn">Delete</button></div></div></div>
+    <div id="renameModal" class="modal-overlay"><div class="modal-content"><h2>Rename File</h2><p>Enter a new name for the file:</p><p class="modal-info-text" id="originalFileName"></p><input type="text" id="newFileNameInput" class="modal-input" /><div class="modal-actions"><button class="modal-btn cancel-btn">Cancel</button><button class="modal-btn confirm-btn">Rename</button></div></div></div>
+    <div id="deleteSelectedModal" class="modal-overlay"><div class="modal-content"><h2>Confirm Deletion</h2><p>Are you sure you want to permanently delete the selected files?</p><p class="modal-info-text" id="deleteSelectedCount"></p><div class="modal-actions"><button class="modal-btn cancel-btn">Cancel</button><button class="modal-btn confirm-btn">Delete</button></div></div></div>
+    <div id="deleteAllModal" class="modal-overlay"><div class="modal-content"><h2>Delete All Files?</h2><p>This will permanently delete all save files. This action cannot be undone. Are you sure you want to continue?</p><div class="modal-actions"><button class="modal-btn cancel-btn">Cancel</button><button class="modal-btn confirm-btn">Continue</button></div></div></div>
+    <div id="finalDeleteAllModal" class="modal-overlay"><div class="modal-content"><h2>Final Confirmation</h2><p>To confirm, please type "DELETE" in the box below.</p><input type="text" id="finalDeleteConfirmationInput" class="modal-input" placeholder="DELETE" /><div class="modal-actions"><button class="modal-btn cancel-btn">Cancel</button><button id="finalConfirmDeleteAllBtn" class="modal-btn confirm-btn" disabled>Delete All</button></div></div></div>
+    
+    <div id="createDbModal" class="modal-overlay"><div class="modal-content"><h2>Create Database</h2><p>Enter a name for the new database (e.g., /_savedata_backup):</p><input type="text" id="newDbNameInput" class="modal-input" placeholder="/_newdatabase" /><div class="modal-actions"><button class="modal-btn cancel-btn">Cancel</button><button class="modal-btn confirm-btn" id="confirmCreateDbBtn">Create</button></div></div></div>
+    <div id="deleteDbModal" class="modal-overlay"><div class="modal-content"><h2>Delete Database?</h2><p>Are you sure you want to delete the ENTIRE database <span id="dbToDeleteName" style="color:#00ffff"></span>?</p><p style="color:#ff005d; font-size:0.8em;">This action cannot be undone.</p><div class="modal-actions"><button class="modal-btn cancel-btn">Cancel</button><button class="modal-btn confirm-btn" id="confirmDeleteDbBtn" style="color:#ff005d; border-color:#ff005d;">Delete DB</button></div></div></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
